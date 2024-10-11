@@ -131,3 +131,4 @@ dist
 
 # Prisma
 src/prisma/migrations/
+.vercel
