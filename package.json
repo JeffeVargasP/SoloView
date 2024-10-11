@@ -17,7 +17,7 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "start": "ts-node src/index.ts",
-    "vercel-build": "npx prisma generate && npx prisma migrate deploy && yarn build",
+    "vercel-build": "npx prisma generate && npx prisma migrate deploy && npm run build",
     "prisma": "npx prisma"
   },
   "dependencies": {
