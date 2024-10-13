@@ -1,0 +1,31 @@
+<div class="flex items-center justify-center min-h-screen bg-[#121212]">
+    <div class="w-full max-w-md">
+        <div class="p-8 m-4">
+            <img src="../../assets/soloview.svg" alt="Logo" class="mb-4 w-24 mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-white text-center">Acessar conta</h2>
+            <form [formGroup]="loginForm">
+                <div class="mb-4">
+                    <label for="email" class="block text-white font-bold">E-mail</label>
+                    <input type="email" id="email" name="email"
+                        class="w-full mt-1 p-2 bg-transparent border border-[#00ff00] text-white rounded-md outline-none placeholder:text-sm placeholder:font-medium placeholder:text-[#AAAAAA]"
+                        formControlName="email" placeholder="Digite seu e-mail" />
+                </div>
+                <div class="mb-4 relative">
+                    <label for="password" class="block text-white font-bold">Senha</label>
+                    <input [type]="passwordFieldType" id="password" name="password"
+                        class="w-full mt-1 p-2 bg-transparent border border-[#00ff00] text-white rounded-md outline-none placeholder:text-sm placeholder:font-medium placeholder:text-[#AAAAAA]"
+                        formControlName="password" placeholder="Digite sua senha" />
+                    <img src="../../assets/eye.svg" alt="Ver senha" class="absolute right-3 top-10 cursor-pointer w-5 h-5"
+                        (click)="togglePasswordVisibility()">
+                </div>
+                <button
+                    class="w-full bg-[#00ae0a] py-2 px-4 text-white font-bold rounded-md shadow-md focus:outline-none"
+                    (click)="login()">ACESSAR</button>
+                <a href="cadastrar" class="block mt-4 text-white text-center">Não possui uma conta?
+                    <span class="text-[#00AE0A] font-semibold">
+                        Cadastrar
+                    </span></a>
+            </form>
+        </div>
+    </div>
+</div>
