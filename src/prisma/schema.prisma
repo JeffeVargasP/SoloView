@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
@@ -11,23 +11,23 @@ datasource db {
 model User {
   id        Int         @id @default(autoincrement())
   email     String      @unique
-  nome      String
-  senha     String
-  cidade    String?
-  fazenda   String?
+  name      String
+  password  String
+  city      String?
+  farm      String?
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   Espressif Espressif[]
 }
 
 model Sensor {
-  id          Int         @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   espressifId Int
-  espressif   Espressif  @relation(fields: [espressifId], references: [id])
+  espressif   Espressif @relation(fields: [espressifId], references: [id])
   temperatura Float
   umidade     Float
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   userId      Int?
 }
 

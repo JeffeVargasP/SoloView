@@ -5,11 +5,11 @@ import { hashPassword } from "../../middleware/auth";
 export const createUser: Express = express();
 
 createUser.post("/", async (req: Request, res: Response): Promise<any> => {
-    const { senha, email, nome } = req.body;
+    const { password, email, name } = req.body;
 
-    if (!senha || !email || !nome) {
+    if (!password || !email || !name) {
         return res.status(400).json({
-            message: "Bad Request: senha, email, nome are required!",
+            message: "Bad Request: password, email, name are required!",
         });
     }
 
@@ -23,19 +23,19 @@ createUser.post("/", async (req: Request, res: Response): Promise<any> => {
         });
     }
 
-    if (senha.length < 6) {
+    if (password.length < 6) {
         return res.status(400).json({
             message: "Password must be at least 6 characters",
         });
     }
 
-    const hashedPasswd = await hashPassword(senha);
+    const hashedPasswd = await hashPassword(password);
 
     const createUser = await database.user.create({
         data: {
-            nome,
+            name,
             email,
-            senha: hashedPasswd,
+            password: hashedPasswd,
         }
     });
 
