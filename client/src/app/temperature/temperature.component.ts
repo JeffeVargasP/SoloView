@@ -42,7 +42,6 @@ export class TemperatureComponent implements OnInit {
           labels: labels,
           datasets: [
             {
-              label: 'Temperatura',
               data: temperatureData,
               fill: true,
               borderColor: '#FF5722',

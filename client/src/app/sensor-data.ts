@@ -1,9 +1,8 @@
 export interface SensorData {
     id: number;
-    sensorId: number;
+    espressifId: number;
     temperature: number;
     humidity: number;
-    luminosity: number;
     userId: string;
     createdAt: string;
     updatedAt: string;

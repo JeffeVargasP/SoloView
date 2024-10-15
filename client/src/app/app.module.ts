@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './navbar/navbar.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 import { HumidityComponent } from './humidity/humidity.component';
 import { TemperatureComponent } from './temperature/temperature.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -23,11 +23,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { sensorReducer } from './state/sensor.reducer';
 import { SensorEffects } from './state/sensor.effects';
+import { NgxEchartsDirective, provideEcharts } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
+    SidebarComponent,
     HumidityComponent,
     TemperatureComponent,
     NotificationComponent,
@@ -45,11 +46,12 @@ import { SensorEffects } from './state/sensor.effects';
     HttpClientModule,
     ChartModule,
     ToastModule,
+    NgxEchartsDirective,
     StoreModule.forRoot({ sensor: sensorReducer }),
     EffectsModule.forRoot([SensorEffects]),
-    StoreDevtoolsModule.instrument({ maxAge: 25 })
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
   ],
-  providers: [],
+  providers: [provideEcharts()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

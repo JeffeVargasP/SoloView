@@ -2,16 +2,22 @@ import { Component } from '@angular/core';
 import { SessionService } from '../service/session.service';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss']
 })
-export class NavbarComponent {
+export class SidebarComponent {
   menuOpen = false;
+  isSidebarVisible = false;
+
   constructor(private sessionService: SessionService) { }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
+  }
+
+  toggleSidebar() {
+    this.isSidebarVisible = !this.isSidebarVisible;
   }
 
   logout() {
