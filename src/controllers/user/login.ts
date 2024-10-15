@@ -5,11 +5,11 @@ import { database } from "../../../database";
 export const loginUser: Express = express();
 
 loginUser.post("/", async (req: Request, res: Response): Promise<any> => {
-    const { email, senha } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !senha) {
+    if (!email || !password) {
         return res.status(400).json({
-            message: "Bad Request: email, senha are required!",
+            message: "Bad Request: email, password are required!",
         });
     }
 
@@ -24,7 +24,7 @@ loginUser.post("/", async (req: Request, res: Response): Promise<any> => {
         });
     }
 
-    const isPasswordValid = await comparePassword(senha, user.senha);
+    const isPasswordValid = await comparePassword(password, user.password);
 
     if (!isPasswordValid) {
         res.status(401).json({
@@ -39,7 +39,7 @@ loginUser.post("/", async (req: Request, res: Response): Promise<any> => {
         user: {
             id: user.id,
             email: user.email,
-            nome: user.nome,
+            name: user.name,
         },
         token: token,
     });
