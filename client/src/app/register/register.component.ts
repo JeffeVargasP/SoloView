@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { UserService } from '../service/user.service';
 import { Router } from '@angular/router';
 
@@ -11,16 +11,26 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
 
   registerForm?: FormGroup | any;
-  passwordFieldType: string | any;
+  passwordFieldType: string | any = 'password';
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      nome: ['', Validators.required],
-      email: ['', Validators.required],
-      senha: ['', Validators.required]
-    });
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, { validator: this.passwordMatchValidator })
+  }
+
+  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { 'mismatch': true };
+    }
+    return null;
   }
 
   togglePasswordVisibility() {
@@ -28,19 +38,16 @@ export class RegisterComponent {
   }
 
   register(): void {
-
     if (this.registerForm.valid) {
-      const name = this.registerForm!.get('nome')!.value;
+      const name = this.registerForm!.get('name')!.value;
       const email = this.registerForm!.get('email')!.value;
-      const password = this.registerForm!.get('senha')!.value;
+      const password = this.registerForm!.get('password')!.value;
 
       this.userService.register(name, email, password).subscribe((res: any) => {
         if (res.message === 'User created') {
           window.location.href = '/login';
         }
       });
-
     }
   }
-
 }
