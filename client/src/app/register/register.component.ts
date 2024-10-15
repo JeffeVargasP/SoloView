@@ -44,7 +44,7 @@ export class RegisterComponent {
       const password = this.registerForm!.get('password')!.value;
 
       this.userService.register(name, email, password).subscribe((res: any) => {
-        if (res.message === 'User created') {
+        if (res.message != 'Email already registered') {
           window.location.href = '/login';
         }
       });

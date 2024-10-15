@@ -12,13 +12,13 @@ import { SessionService } from '../service/session.service';
 export class LoginComponent implements OnInit {
 
   loginForm?: FormGroup | any;
-  passwordFieldType: string | any;
+  passwordFieldType: string | any  = 'password';
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router, private sessionService: SessionService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }

@@ -9,18 +9,24 @@
                     <input type="email" id="email" name="email"
                         class="w-full mt-1 p-2 bg-transparent border border-[#00ff00] text-white rounded-md outline-none placeholder:text-sm placeholder:font-medium placeholder:text-[#AAAAAA]"
                         formControlName="email" placeholder="Digite seu e-mail" />
+                    <span *ngIf="loginForm.get('email').errors?.['required'] && loginForm.get('email').touched"
+                        class="text-red-500 text-sm">E-mail é obrigatório.</span>
                 </div>
                 <div class="mb-4 relative">
                     <label for="password" class="block text-white font-bold">Senha</label>
                     <input [type]="passwordFieldType" id="password" name="password"
                         class="w-full mt-1 p-2 bg-transparent border border-[#00ff00] text-white rounded-md outline-none placeholder:text-sm placeholder:font-medium placeholder:text-[#AAAAAA]"
-                        formControlName="password" placeholder="Digite sua senha" />
-                    <img src="../../assets/eye.svg" alt="Ver senha" class="absolute right-3 top-10 cursor-pointer w-5 h-5"
+                        formControlName="password" placeholder="Defina uma senha" />
+                    <img [src]="passwordFieldType === 'password' ? '../../assets/eye-off-outline.svg' : '../../assets/eye.svg'"
+                        alt="Ver senha" class="absolute right-3 top-10 cursor-pointer w-5 h-5"
                         (click)="togglePasswordVisibility()">
+                    <span *ngIf="loginForm.get('password').errors?.['required'] && loginForm.get('password').touched"
+                        class="text-red-500 text-sm">Senha é obrigatória.</span>
                 </div>
                 <button
-                    class="w-full bg-[#00ae0a] py-2 px-4 text-white font-bold rounded-md shadow-md focus:outline-none"
-                    (click)="login()">ACESSAR</button>
+                    class="w-full bg-[#00ae0a] py-2 px-4 text-white cursor-pointer font-bold rounded-md shadow-md focus:outline-none"
+                    (click)="login()" [disabled]="loginForm.invalid"
+                    [ngClass]="{'disabled': loginForm.invalid}">ACESSAR</button>
                 <a href="cadastrar" class="block mt-4 text-white text-center">Não possui uma conta?
                     <span class="text-[#00AE0A] font-semibold">
                         Cadastrar
