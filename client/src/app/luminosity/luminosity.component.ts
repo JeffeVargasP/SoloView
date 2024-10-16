@@ -37,19 +37,10 @@ export class LuminosityComponent implements OnInit {
       if (sensorData) {
         const limitedSensorData = sensorData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
         const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
-        const luminosityData = limitedSensorData.map(item => item.luminosity);
         this.data = {
           labels: labels,
           datasets:
           [
-            {
-              label: 'Luminosidade',
-              data: luminosityData,
-              fill: true,
-              borderColor: '#FFEB3B',
-              backgroundColor: 'rgba(255, 235, 59, 0.2)',
-              tension: 0.4,
-            },
           ]
         };
 
@@ -142,18 +133,10 @@ export class LuminosityComponent implements OnInit {
       if (sensorData) {
         const limitedSensorData = sensorData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
         const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
-        const luminosityData = limitedSensorData.map(item => item.luminosity);
         this.data = {
           labels: labels,
           datasets: [
-            {
-              label: 'Luminosidade',
-              data: luminosityData,
-              fill: true,
-              borderColor: '#FFEB3B',
-              backgroundColor: 'rgba(255, 235, 59, 0.2)',
-              tension: 0.4,
-            },
+
           ],
         };
       }

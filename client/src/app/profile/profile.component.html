@@ -1,0 +1,75 @@
+<div class="flex items-center justify-center min-h-screen bg-[#14141414]">
+    <div class="w-full max-w-md">
+      <div class="p-8 m-4">
+        <h2 class="text-3xl font-bold mb-4 text-white text-center">Meu perfil</h2>
+        <form [formGroup]="perfilForm">
+          <!-- Nome -->
+          <div class="mb-4">
+            <label for="nome" class="block text-white font-bold">Nome</label>
+            <input
+              formControlName="nome"
+              id="nome"
+              name="nome"
+              type="text"
+              placeholder="Nome do usuário"
+              class="w-full mt-1 p-2 bg-transparent border border-[#00ff00] text-white rounded-md outline-none placeholder:text-sm placeholder:font-medium placeholder:text-[#AAAAAA]"
+            />
+            <span *ngIf="perfilForm.get('nome').errors?.['required'] && perfilForm.get('nome').touched" class="text-red-500 text-sm">Nome é obrigatório.</span>
+          </div>
+  
+          <!-- E-mail -->
+          <div class="mb-4">
+            <label for="email" class="block text-white font-bold">E-mail</label>
+            <input
+              formControlName="email"
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Digite seu e-mail"
+              class="w-full mt-1 p-2 bg-transparent border border-[#00ff00] text-white rounded-md outline-none placeholder:text-sm placeholder:font-medium placeholder:text-[#AAAAAA]"
+            />
+            <span *ngIf="perfilForm.get('email').errors?.['required'] && perfilForm.get('email').touched" class="text-red-500 text-sm">E-mail é obrigatório.</span>
+          </div>
+  
+          <!-- Cidade -->
+          <div class="mb-4">
+            <label for="cidade" class="block text-white font-bold">Cidade</label>
+            <input
+              formControlName="cidade"
+              id="cidade"
+              name="cidade"
+              type="text"
+              placeholder="Qual sua cidade?"
+              class="w-full mt-1 p-2 bg-transparent border border-[#00ff00] text-white rounded-md outline-none placeholder:text-sm placeholder:font-medium placeholder:text-[#AAAAAA]"
+            />
+            <span *ngIf="perfilForm.get('cidade').errors?.['required'] && perfilForm.get('cidade').touched" class="text-red-500 text-sm">Cidade é obrigatória.</span>
+          </div>
+  
+          <!-- Fazenda -->
+          <div class="mb-4">
+            <label for="fazenda" class="block text-white font-bold">Fazenda</label>
+            <input
+              formControlName="fazenda"
+              id="fazenda"
+              name="fazenda"
+              type="text"
+              placeholder="Digite o nome da sua fazenda"
+              class="w-full mt-1 p-2 bg-transparent border border-[#00ff00] text-white rounded-md outline-none placeholder:text-sm placeholder:font-medium placeholder:text-[#AAAAAA]"
+            />
+            <span *ngIf="perfilForm.get('fazenda').errors?.['required'] && perfilForm.get('fazenda').touched" class="text-red-500 text-sm">Fazenda é obrigatória.</span>
+          </div>
+  
+          <!-- Botão salvar -->
+          <button
+            type="submit"
+            class="w-full bg-[#00ae0a] py-2 px-4 text-white cursor-pointer font-bold rounded-md shadow-md focus:outline-none"
+            [disabled]="perfilForm.invalid"
+            [ngClass]="{'disabled': perfilForm.invalid}"
+          >
+            SALVAR
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

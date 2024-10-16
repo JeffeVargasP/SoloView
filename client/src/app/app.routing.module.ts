@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { HumidityComponent } from './humidity/humidity.component';
 import { TemperatureComponent } from './temperature/temperature.component';
-import { NotificationComponent } from './notification/notification.component';
+import { ProfileComponent } from './profile/profile.component';
 import { LuminosityComponent } from './luminosity/luminosity.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -27,7 +27,7 @@ const routes: Routes = [
     },
     {
         path: 'notificacao',
-        component: NotificationComponent,
+        component: ProfileComponent,
         canActivate: [authGuard]
     },
     {

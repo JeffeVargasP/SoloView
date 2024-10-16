@@ -6,7 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HumidityComponent } from './humidity/humidity.component';
 import { TemperatureComponent } from './temperature/temperature.component';
-import { NotificationComponent } from './notification/notification.component';
+import { ProfileComponent } from './profile/profile.component';
 import { LuminosityComponent } from './luminosity/luminosity.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -31,7 +31,7 @@ import { NgxEchartsDirective, provideEcharts } from 'ngx-echarts';
     SidebarComponent,
     HumidityComponent,
     TemperatureComponent,
-    NotificationComponent,
+    ProfileComponent,
     LuminosityComponent,
     LoginComponent,
     RegisterComponent,

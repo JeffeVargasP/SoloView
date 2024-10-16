@@ -4,6 +4,7 @@ import { Observable, Subscription, take } from 'rxjs';
 import { SensorData } from '../sensor-data';
 import { loadSensorData } from '../state/sensor.actions';
 import { selectSensorData } from '../state/sensor.selectors';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-general',
@@ -38,7 +39,6 @@ export class GeneralComponent implements OnInit, OnDestroy {
         const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
         const temperatureData = limitedSensorData.map(item => item.temperature);
         const humidityData = limitedSensorData.map(item => item.humidity);
-        const luminosityData = limitedSensorData.map(item => item.luminosity);
         this.data = {
           labels: labels,
           datasets: [
@@ -58,14 +58,6 @@ export class GeneralComponent implements OnInit, OnDestroy {
               backgroundColor: 'rgba(66, 165, 245, 0.2)',
               tension: 0.4
             },
-            {
-              label: 'Luminosidade',
-              data: luminosityData,
-              fill: false,
-              borderColor: '#FFEB3B',
-              backgroundColor: 'rgba(255, 235, 59, 0.2)',
-              tension: 0.4,
-            }
           ]
         };
 
@@ -156,7 +148,6 @@ export class GeneralComponent implements OnInit, OnDestroy {
         const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
         const temperatureData = limitedSensorData.map(item => item.temperature);
         const humidityData = limitedSensorData.map(item => item.humidity);
-        const luminosityData = limitedSensorData.map(item => item.luminosity);
         this.data = {
           labels: labels,
           datasets: [
@@ -176,14 +167,6 @@ export class GeneralComponent implements OnInit, OnDestroy {
               backgroundColor: 'rgba(66, 165, 245, 0.2)',
               tension: 0.4
             },
-            {
-              label: 'Luminosidade',
-              data: luminosityData,
-              fill: false,
-              borderColor: '#FFEB3B',
-              backgroundColor: 'rgba(255, 235, 59, 0.2)',
-              tension: 0.4,
-            }
           ]
         };
       }
