@@ -24,8 +24,8 @@ model Sensor {
   id          Int       @id @default(autoincrement())
   espressifId Int
   espressif   Espressif @relation(fields: [espressifId], references: [id])
-  temperatura Float
-  umidade     Float
+  temperature Float
+  humidity    Float
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      Int?
