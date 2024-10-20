@@ -36,8 +36,14 @@ export class ProfileComponent {
 
   }
 
-  onSubmit(): void {
-    console.log(this.perfilForm.value);
+  submit(): void {
+    this.userSerivce.update(
+      this.perfilForm.value.name,
+      this.perfilForm.value.email,
+      this.perfilForm.value.city,
+      this.perfilForm.value.farm
+    ).subscribe((res) => {
+    });
   }
 
 }
