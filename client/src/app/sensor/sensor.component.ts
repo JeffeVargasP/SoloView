@@ -7,11 +7,18 @@ import { selectSensorData } from '../state/sensor.selectors';
 import { loadSensorData } from '../state/sensor.actions';
 
 @Component({
-  selector: 'app-luminosity',
-  templateUrl: './luminosity.component.html',
-  styleUrls: ['./luminosity.component.scss']
+  selector: 'app-sensor',
+  templateUrl: './sensor.component.html',
+  styleUrls: ['./sensor.component.scss']
 })
-export class LuminosityComponent implements OnInit {
+export class SensorComponent implements OnInit {
+
+  sensores = [
+    { id: '01', modelo: 'DHT 11' },
+    { id: '02', modelo: 'HL-69' },
+    { id: '03', modelo: 'DHT 11' },
+    { id: '04', modelo: 'HL-69' }
+  ];
 
   data: any;
   userId: any;
@@ -40,8 +47,8 @@ export class LuminosityComponent implements OnInit {
         this.data = {
           labels: labels,
           datasets:
-          [
-          ]
+            [
+            ]
         };
 
         this.options = {

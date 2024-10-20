@@ -1,5 +1,5 @@
 <div class="flex">
-    <nav class="absolute z-50 bg-[#141414] text-white h-screen w-[70px] flex flex-col items-center py-10 rounded-tr-[50px] rounded-br-[50px] text-sm">
+    <nav class="fixed z-50 bg-[#141414] text-white h-screen w-[70px] flex flex-col items-center py-10 rounded-tr-[50px] rounded-br-[50px] text-sm">
         <div class="logo mb-10">
             <a routerLink="/geral">
                 <img src="../../assets/soloview.svg" alt="Logo" class="h-6">
@@ -12,11 +12,11 @@
             <a routerLink="/temperatura" class="cursor-pointer">
                 <img src="../../assets/temperature.svg" alt="Temperatura" class="h-6">
             </a>
-            <a routerLink="/luminosidade" class="cursor-pointer">
-                <img src="../../assets/sensors.svg" alt="Luminosidade" class="h-6">
+            <a routerLink="/sensor" class="cursor-pointer">
+                <img src="../../assets/sensors.svg" alt="Sensor" class="h-6">
             </a>
-            <a routerLink="/notificacao" class="cursor-pointer">
-                <img src="../../assets/farmer.svg" alt="Notificações" class="h-6">
+            <a routerLink="/profile" class="cursor-pointer">
+                <img src="../../assets/farmer.svg" alt="Profile" class="h-6">
             </a>
         </div>
         <div class="mt-auto mb-10 hover:cursor-pointer" (click)="logout()">

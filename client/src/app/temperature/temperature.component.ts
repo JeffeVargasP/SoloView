@@ -57,6 +57,7 @@ export class TemperatureComponent implements OnInit {
           aspectRatio: 0.6,
           plugins: {
             legend: {
+              display: false,
               labels: {
                 color: '#ffffff'
               }
@@ -64,24 +65,27 @@ export class TemperatureComponent implements OnInit {
           },
           scales: {
             x: {
+              type: 'linear',
+              min: 0,
+              max: 5, // Define o intervalo do eixo x de 0 a 5
               ticks: {
+                stepSize: 1, // Define o espaçamento dos ticks em 1 unidade para formar os quadrados
                 color: '#ffffff',
-                maxTicksLimit: 10
               },
               grid: {
-                color: 'rgba(255, 255, 255, 0.2)',
+                color: 'rgba(255, 255, 255, 0.2)', // Cor da grade
                 drawBorder: false
               }
             },
             y: {
-              min: 20,
-              max: 34,
+              min: 0,
+              max: 50, // Define o intervalo do eixo y: 0-50 para temperatura e 0-100 para umidade
               ticks: {
+                stepSize: 10, // Define o espaçamento dos ticks para formar quadrados
                 color: '#ffffff',
-                maxTicksLimit: 10
               },
               grid: {
-                color: 'rgba(255, 255, 255, 0.2)',
+                color: 'rgba(255, 255, 255, 0.2)', // Cor da grade
                 drawBorder: false
               }
             }

@@ -1,0 +1,13 @@
+<div class="flex items-center justify-center min-h-screen">
+        <div class="min-w-[80%] p-8 m-4">
+            <h2 class="text-3xl font-bold mb-4 text-white text-center">Sensores configurados</h2>
+            <p class="text-center text-gray-300 mb-8">Nome da fazenda</p>
+            <div class="border border-[#D9D9D9] rounded-md">
+                <div *ngFor="let sensor of sensores; let i = index" class="border border-[#00ff00] rounded-md m-4 p-4">
+                    <p class="text-white font-bold mb-2">ID: {{sensor.id}}</p>
+                    <p class="text-white font-bold mb-2">USUÁRIO: <span class="font-normal">Lorem Ipsum</span></p>
+                    <p class="text-white font-bold">Modelo: <span class="font-normal">{{sensor.modelo}}</span></p>
+                </div>
+            </div>
+    </div>
+</div>

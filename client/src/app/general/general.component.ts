@@ -4,7 +4,6 @@ import { Observable, Subscription, take } from 'rxjs';
 import { SensorData } from '../sensor-data';
 import { loadSensorData } from '../state/sensor.actions';
 import { selectSensorData } from '../state/sensor.selectors';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-general',
@@ -13,9 +12,11 @@ import { FormGroup } from '@angular/forms';
 })
 export class GeneralComponent implements OnInit, OnDestroy {
 
-  data: any;
+  temperatureData: any;
+  temperatureOptions: any;
+  humidityData: any;
+  humidityOptions: any;
   userId: any;
-  options: any;
   sensorData$: Observable<SensorData[]>;
   private subscription: Subscription | undefined;
   private intervalId: any;
@@ -28,72 +29,18 @@ export class GeneralComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Carrega os dados do sensor
     this.store.dispatch(loadSensorData());
+
+    // Atualiza os dados a cada 5 segundos
     this.intervalId = setInterval(() => {
       this.store.dispatch(loadSensorData());
-    }, 5000); // Atualiza a cada 5 segundos
+    }, 5000);
 
+    // Inscreve-se para atualizar os gráficos quando os dados mudarem
     this.subscription = this.sensorData$.subscribe((sensorData) => {
       if (sensorData) {
-        const limitedSensorData = sensorData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
-        const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
-        const temperatureData = limitedSensorData.map(item => item.temperature);
-        const humidityData = limitedSensorData.map(item => item.humidity);
-        this.data = {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Temperatura',
-              data: temperatureData,
-              fill: false,
-              borderColor: '#FF5722',
-              backgroundColor: 'rgba(255, 87, 34, 0.2)',
-              tension: 0.4,
-            },
-            {
-              label: 'Umidade',
-              data: humidityData,
-              fill: false,
-              borderColor: '#42A5F5',
-              backgroundColor: 'rgba(66, 165, 245, 0.2)',
-              tension: 0.4
-            },
-          ]
-        };
-
-        this.options = {
-          animation: false,
-          maintainAspectRatio: false,
-          aspectRatio: 0.6,
-          plugins: {
-            legend: {
-              labels: {
-                color: '#ffffff'
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: {
-                color: '#ffffff',
-              },
-              grid: {
-                color: 'rgba(255, 255, 255, 0.2)',
-                drawBorder: false
-              }
-            },
-            y: {
-              ticks: {
-                color: '#ffffff',
-              },
-              grid: {
-                color: 'rgba(255, 255, 255, 0.2)',
-                drawBorder: false
-              }
-            }
-          }
-        };
-
+        this.updateChartData(sensorData);
       }
     });
   }
@@ -109,10 +56,13 @@ export class GeneralComponent implements OnInit, OnDestroy {
 
   async nextData(): Promise<void> {
     const totalDataPoints = await this.sensorData$.pipe(take(1)).toPromise().then(sensorData => sensorData?.length || 0);
-    const nextPosition = await this.currentPosition + this.maxDataPoints;
+    const nextPosition = this.currentPosition + this.maxDataPoints;
     if (nextPosition < totalDataPoints) {
       this.currentPosition = nextPosition;
-      this.updateChartData();
+      const sensorData = await this.sensorData$.pipe(take(1)).toPromise();
+      if (sensorData) {
+        this.updateChartData(sensorData);
+      }
     }
   }
 
@@ -120,56 +70,97 @@ export class GeneralComponent implements OnInit, OnDestroy {
     const previousPosition = this.currentPosition - this.maxDataPoints;
     if (previousPosition >= 0) {
       this.currentPosition = previousPosition;
-      this.updateChartData();
+      this.sensorData$.pipe(take(1)).toPromise().then(sensorData => {
+        if (sensorData) {
+          this.updateChartData(sensorData);
+        }
+      });
     }
   }
 
-  previousChart(): void {
-    const previousPosition = this.currentPosition - this.maxDataPoints;
-    if (previousPosition >= 0) {
-      this.currentPosition = previousPosition;
-      this.updateChartData();
-    }
+  private updateChartData(sensorData: SensorData[]): void {
+    // Limita os dados para os gráficos
+    const limitedSensorData = sensorData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
+    const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
+    const temperatureData = limitedSensorData.map(item => item.temperature);
+    const humidityData = limitedSensorData.map(item => item.humidity);
+
+    // Atualiza o gráfico de temperatura
+    this.temperatureData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Temperatura',
+          data: temperatureData,
+          fill: false,
+          borderColor: '#FF5722',
+          backgroundColor: 'rgba(255, 87, 34, 0.2)',
+          tension: 0.4,
+        }
+      ]
+    };
+
+    // Atualiza o gráfico de umidade
+    this.humidityData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Umidade',
+          data: humidityData,
+          fill: false,
+          borderColor: '#42A5F5',
+          backgroundColor: 'rgba(66, 165, 245, 0.2)',
+          tension: 0.4
+        }
+      ]
+    };
+
+    // Aplica as opções padrão para ambos os gráficos
+    this.temperatureOptions = this.getChartOptions(true);
+    this.humidityOptions = this.getChartOptions(false);
   }
 
-  async nextChart(): Promise<void> {
-    const totalDataPoints = await this.sensorData$.pipe(take(1)).toPromise().then(sensorData => sensorData?.length || 0);
-    const nextPosition = await this.currentPosition + this.maxDataPoints;
-    if (nextPosition < totalDataPoints) {
-      this.currentPosition = nextPosition;
-      this.updateChartData();
-    }
-  }
-
-  private updateChartData(): void {
-    this.sensorData$.pipe(take(1)).subscribe((sensorData) => {
-      if (sensorData) {
-        const limitedSensorData = sensorData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
-        const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
-        const temperatureData = limitedSensorData.map(item => item.temperature);
-        const humidityData = limitedSensorData.map(item => item.humidity);
-        this.data = {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Temperatura',
-              data: temperatureData,
-              fill: false,
-              borderColor: '#FF5722',
-              backgroundColor: 'rgba(255, 87, 34, 0.2)',
-              tension: 0.4,
-            },
-            {
-              label: 'Umidade',
-              data: humidityData,
-              fill: false,
-              borderColor: '#42A5F5',
-              backgroundColor: 'rgba(66, 165, 245, 0.2)',
-              tension: 0.4
-            },
-          ]
-        };
+  private getChartOptions(isTemperature: boolean): any {
+    return {
+      animation: false,
+      maintainAspectRatio: false,
+      aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          display: false, // Desativa a legenda
+          labels: {
+            color: '#ffffff'
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          min: 0,
+          max: 5, // Define o intervalo do eixo x de 0 a 5
+          ticks: {
+            stepSize: 1, // Define o espaçamento dos ticks em 1 unidade para formar os quadrados
+            color: '#ffffff',
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.2)', // Cor da grade
+            drawBorder: false
+          }
+        },
+        y: {
+          min: 0,
+          max: isTemperature ? 50 : 100, // Define o intervalo do eixo y: 0-50 para temperatura e 0-100 para umidade
+          ticks: {
+            stepSize: isTemperature ? 10 : 25, // Define o espaçamento dos ticks para formar quadrados
+            color: '#ffffff',
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.2)', // Cor da grade
+            drawBorder: false
+          }
+        }
       }
-    });
+    };
   }
+
 }

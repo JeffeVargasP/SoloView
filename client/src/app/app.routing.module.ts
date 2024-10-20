@@ -4,7 +4,7 @@ import { authGuard } from './guards/auth.guard';
 import { HumidityComponent } from './humidity/humidity.component';
 import { TemperatureComponent } from './temperature/temperature.component';
 import { ProfileComponent } from './profile/profile.component';
-import { LuminosityComponent } from './luminosity/luminosity.component';
+import { SensorComponent } from './sensor/sensor.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { GeneralComponent } from './general/general.component';
@@ -26,13 +26,13 @@ const routes: Routes = [
         canActivate: [authGuard]
     },
     {
-        path: 'notificacao',
+        path: 'profile',
         component: ProfileComponent,
         canActivate: [authGuard]
     },
     {
-        path: 'luminosidade',
-        component: LuminosityComponent,
+        path: 'sensor',
+        component: SensorComponent,
         canActivate: [authGuard]
     },
     {
