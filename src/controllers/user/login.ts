@@ -40,6 +40,8 @@ loginUser.post("/", async (req: Request, res: Response): Promise<any> => {
             id: user.id,
             email: user.email,
             name: user.name,
+            city: user.city,
+            farm: user.farm,
         },
         token: token,
     });
