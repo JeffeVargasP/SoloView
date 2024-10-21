@@ -33,7 +33,6 @@ model Sensor {
 
 model Espressif {
   id        Int      @id @default(autoincrement())
-  sensorId  Int
   sensor    Sensor[]
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
