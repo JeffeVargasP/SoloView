@@ -17,8 +17,8 @@ export class SensorService {
     return this.http.get(this.apiURL + 'sensor');
   }
 
-  getEspressifByUserId(sensorId: string): Observable<any> {
-    return this.http.get(this.apiURL + 'data/id/sensor/' + sensorId);
+  getEspressifByUserId(userId: string): Observable<any> {
+    return this.http.get(this.apiURL + 'sensor/user/id/' + userId);
   }
 
 }

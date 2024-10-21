@@ -15,9 +15,8 @@ import { Router } from '@angular/router';
 export class GeneralComponent implements OnInit, OnDestroy {
 
   temperatureData: any;
-  temperatureOptions: any;
+  weather: any;
   humidityData: any;
-  humidityOptions: any;
   userId: any;
   city: any;
   sensorData$: Observable<SensorData[]>;
@@ -63,9 +62,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
   }
 
   navigateTo(path: string): void {
-
     this.router.navigate([path]);
-
   }
 
   async nextData(): Promise<void> {
@@ -97,83 +94,49 @@ export class GeneralComponent implements OnInit, OnDestroy {
     const limitedSensorData = sensorData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
     const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
     const temperatureData = limitedSensorData.map(item => item.temperature);
+    this.weather = temperatureData[temperatureData.length - 1];
     const humidityData = limitedSensorData.map(item => item.humidity);
 
-    // Atualiza o gráfico de temperatura
+    // Atualiza o gráfico de temperatura usando ECharts
     this.temperatureData = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Temperatura',
-          data: temperatureData,
-          fill: false,
-          borderColor: '#FF5722',
-          backgroundColor: 'rgba(255, 87, 34, 0.2)',
-          tension: 0.4,
-        }
-      ]
-    };
-
-    // Atualiza o gráfico de umidade
-    this.humidityData = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Umidade',
-          data: humidityData,
-          fill: false,
-          borderColor: '#42A5F5',
-          backgroundColor: 'rgba(66, 165, 245, 0.2)',
-          tension: 0.4
-        }
-      ]
-    };
-
-    // Aplica as opções padrão para ambos os gráficos
-    this.temperatureOptions = this.getChartOptions(true);
-    this.humidityOptions = this.getChartOptions(false);
-  }
-
-  private getChartOptions(isTemperature: boolean): any {
-    return {
-      animation: false,
-      maintainAspectRatio: false,
-      aspectRatio: 0.6,
-      plugins: {
-        legend: {
-          display: false, // Desativa a legenda
-          labels: {
-            color: '#ffffff'
-          }
-        }
+      xAxis: {
+        type: 'category',
+        data: labels,
+        boundaryGap: false
       },
-      scales: {
-        x: {
-          type: 'linear',
-          min: 0,
-          max: 5, // Define o intervalo do eixo x de 0 a 5
-          ticks: {
-            stepSize: 1, // Define o espaçamento dos ticks em 1 unidade para formar os quadrados
-            color: '#ffffff',
-          },
-          grid: {
-            color: 'rgba(255, 255, 255, 0.2)', // Cor da grade
-            drawBorder: false
-          }
-        },
-        y: {
-          min: 0,
-          max: isTemperature ? 50 : 100, // Define o intervalo do eixo y: 0-50 para temperatura e 0-100 para umidade
-          ticks: {
-            stepSize: isTemperature ? 10 : 25, // Define o espaçamento dos ticks para formar quadrados
-            color: '#ffffff',
-          },
-          grid: {
-            color: 'rgba(255, 255, 255, 0.2)', // Cor da grade
-            drawBorder: false
-          }
-        }
-      }
+      yAxis: {
+        type: 'value',
+        min: 0,
+        max: 50
+      },
+      series: [{
+        data: temperatureData,
+        type: 'line',
+        smooth: true,
+        areaStyle: {},
+        color: '#FF5722'
+      }]
+    };
+
+    // Atualiza o gráfico de umidade usando ECharts
+    this.humidityData = {
+      xAxis: {
+        type: 'category',
+        data: labels,
+        boundaryGap: false
+      },
+      yAxis: {
+        type: 'value',
+        min: 0,
+        max: 100
+      },
+      series: [{
+        data: humidityData,
+        type: 'line',
+        smooth: true,
+        areaStyle: {},
+        color: '#42A5F5'
+      }]
     };
   }
 

@@ -1,26 +1,26 @@
-<div class="flex flex-col items-center justify-center gap-y-4 h-screen w-[calc(100%-90px)] ml-[90px] text-white">
-    <h2 class="text-3xl font-bold">Umidade</h2>
-    <p class="text-lg">{{farm}}</p>
-    
-    <div class="border rounded-md w-3/4 h-3/5 p-12 flex flex-col items-center justify-center">
-        <!-- Gráfico de Linha -->
-        <div class="w-full">
-          <p-chart type="line" [data]="data" [options]="options" class="w-full h-full"></p-chart>
-        </div>
-    
-        <!-- Botões de Navegação -->
-        <div class="flex flex-row items-center gap-3">
-          <button (click)="previousChart()" class="bg-[#272727] hover:bg-[#3D3D3D] text-white font-bold py-2 px-4 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-          </button>
-          <button (click)="nextChart()" class="bg-[#272727] hover:bg-[#3D3D3D] text-white font-bold py-2 px-4 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </button>
-        </div>
-    </div>
-  </div>
+<div class="flex flex-col items-center justify-center gap-y-4 h-dvh text-white">
+  <h2 class="text-3xl font-bold">Umidade</h2>
+  <p class="text-lg">{{farm}}</p>
   
+  <div class="border rounded-md w-3/4 h-3/5 p-12 flex flex-col items-center justify-center">
+      <!-- Gráfico de Linha -->
+      <div class="w-full h-96">
+        <echarts [options]="data" class="flex w-full h-full"></echarts>
+      </div>
+      
+  
+      <!-- Botões de Navegação -->
+      <div class="flex flex-row items-center gap-3">
+        <button (click)="previousData()" class="bg-[#272727] hover:bg-[#3D3D3D] text-white font-bold py-2 px-4 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        <button (click)="nextChart()" class="bg-[#272727] hover:bg-[#3D3D3D] text-white font-bold py-2 px-4 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+  </div>
+</div>

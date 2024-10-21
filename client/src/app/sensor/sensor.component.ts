@@ -16,6 +16,7 @@ export class SensorComponent implements OnInit {
 
   data: any;
   farm: any;
+  name: any;
   userId: any;
   options: any;
   sensorData$: Observable<SensorData[]>;
@@ -33,14 +34,13 @@ export class SensorComponent implements OnInit {
 
     this.sessionService.getSession().subscribe((session: any) => {
       this.farm = session.user.farm;
+      this.name = session.user.name;
     });
 
     this.store.dispatch(loadSensorData());
     this.intervalId = setInterval(() => {
       this.store.dispatch(loadSensorData());
     }, 5000); // Atualiza a cada 5 segundos
-
-    console.log(this.sensorData$);
 
     this.subscription = this.sensorData$.subscribe((sensorData) => {
       if (sensorData) {

@@ -1,5 +1,6 @@
 <div class="flex">
-    <nav class="fixed z-50 bg-[#141414] text-white h-screen w-[70px] flex flex-col items-center py-10 rounded-tr-[50px] rounded-br-[50px] text-sm">
+    <!-- Sidebar - Visível apenas em telas grandes -->
+    <nav class="hidden md:flex fixed z-50 bg-[#141414] text-white h-screen w-[80px] flex-col items-center py-10 rounded-tr-[50px] rounded-br-[50px] text-sm">
         <div class="logo mb-10">
             <a routerLink="/geral">
                 <img src="../../assets/soloview.svg" alt="Logo" class="h-6">
@@ -23,4 +24,31 @@
             <img src="../../assets/logout.svg" alt="Logout" class="h-6">
         </div>
     </nav>
+
+    <!-- Menu hambúrguer - Visível apenas em telas pequenas -->
+    <button class="block md:hidden text-white" (click)="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+    </button>
+
+    <!-- Sidebar expandida - Ocupa toda a tela quando o menu hambúrguer é clicado -->
+    <div class="fixed z-50 bg-[#141414] text-white h-screen w-screen flex flex-col py-10 text-sm transition-transform duration-300 transform"
+         [class.translate-x-full]="!isMenuOpen" [class.translate-x-0]="isMenuOpen">
+        <div class="logo mb-10 text-center">
+            <a routerLink="/geral" (click)="toggleMenu()">
+                <img src="../../assets/soloview.svg" alt="Logo" class="h-6 mx-auto">
+            </a>
+        </div>
+        <div class="flex flex-col space-y-4 flex-1 justify-center text-center">
+            <a routerLink="/umidade" class="cursor-pointer" (click)="toggleMenu()">Umidade</a>
+            <a routerLink="/temperatura" class="cursor-pointer" (click)="toggleMenu()">Temperatura</a>
+            <a routerLink="/sensor" class="cursor-pointer" (click)="toggleMenu()">Sensor</a>
+            <a routerLink="/profile" class="cursor-pointer" (click)="toggleMenu()">Profile</a>
+        </div>
+        <div class="mt-auto mb-10 hover:cursor-pointer text-center" (click)="logout(); toggleMenu()">
+            <img src="../../assets/logout.svg" alt="Logout" class="h-6 mx-auto">
+        </div>
+    </div>
 </div>

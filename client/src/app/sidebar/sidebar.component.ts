@@ -7,13 +7,13 @@ import { SessionService } from '../service/session.service';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-  menuOpen = false;
+  isMenuOpen = false;
   isSidebarVisible = false;
 
   constructor(private sessionService: SessionService) { }
 
   toggleMenu() {
-    this.menuOpen = !this.menuOpen;
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   toggleSidebar() {
