@@ -3,7 +3,7 @@ import { database } from "../../../database";
 
 export const getEspDataByUserId: Express = express();
 
-getEspDataByUserId.get("/sensor/id/:user_id", async (req: Request, res: Response) => {
+getEspDataByUserId.get("/user/id/:user_id", async (req: Request, res: Response) => {
     const userId = +req.params.userId;
 
     try {
