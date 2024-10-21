@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment.development';
 @Injectable({
   providedIn: 'root'
 })
-export class EspressifService {
+export class SensorService {
 
   private apiURL = environment.apiURL;
 
@@ -14,11 +14,11 @@ export class EspressifService {
   }
 
   getEspressif(): Observable<any> {
-    return this.http.get(this.apiURL + 'esp/data');
+    return this.http.get(this.apiURL + 'sensor');
   }
 
-  getEspressifByUserId(userId: string): Observable<any> {
-    return this.http.get(this.apiURL + 'esp/sensor/id/user/' + userId);
+  getEspressifByUserId(sensorId: string): Observable<any> {
+    return this.http.get(this.apiURL + 'data/id/sensor/' + sensorId);
   }
 
 }

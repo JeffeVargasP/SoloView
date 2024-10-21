@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EspressifService } from '../service/espressif.service';
+import { SensorService } from '../service/sensor.service';
 import { loadSensorData, loadSensorDataSuccess, loadSensorDataFailure } from './sensor.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -24,7 +24,7 @@ export class SensorEffects {
 
   constructor(
     private actions$: Actions,
-    private espressifService: EspressifService,
+    private espressifService: SensorService,
     private sessionService: SessionService
   ) {
     this.userId = JSON.parse(sessionStorage.getItem('session') || '{}');

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EspressifService } from '../service/espressif.service';
+import { SensorService } from '../service/sensor.service';
 import { Observable, Subscription, take } from 'rxjs';
 import { SensorData } from '../sensor-data';
 import { Store } from '@ngrx/store';
