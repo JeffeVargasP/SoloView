@@ -14,13 +14,6 @@ import { SessionService } from '../service/session.service';
 })
 export class SensorComponent implements OnInit {
 
-  sensores = [
-    { id: '01', modelo: 'DHT 11' },
-    { id: '02', modelo: 'HL-69' },
-    { id: '03', modelo: 'DHT 11' },
-    { id: '04', modelo: 'HL-69' }
-  ];
-
   data: any;
   farm: any;
   userId: any;
@@ -47,55 +40,12 @@ export class SensorComponent implements OnInit {
       this.store.dispatch(loadSensorData());
     }, 5000); // Atualiza a cada 5 segundos
 
+    console.log(this.sensorData$);
+
     this.subscription = this.sensorData$.subscribe((sensorData) => {
       if (sensorData) {
         const limitedSensorData = sensorData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
-        const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
-        this.data = {
-          labels: labels,
-          datasets:
-            [
-            ]
-        };
-
-        this.options = {
-          animation: false,
-          maintainAspectRatio: false,
-          aspectRatio: 0.6,
-          plugins: {
-            legend: {
-              labels: {
-                color: '#ffffff'
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: {
-                color: '#ffffff',
-                maxTicksLimit: 10
-              },
-              grid: {
-                color: 'rgba(255, 255, 255, 0.2)',
-                drawBorder: false
-              }
-            },
-            y: {
-              min: 0,
-              max: 100,
-              ticks: {
-                color: '#ffffff',
-                maxTicksLimit: 10
-              },
-              grid: {
-                color: 'rgba(255, 255, 255, 0.2)',
-                drawBorder: false
-              }
-            }
-          }
-        };
       }
-
     });
   }
 
@@ -105,40 +55,6 @@ export class SensorComponent implements OnInit {
     }
     if (this.intervalId) {
       clearInterval(this.intervalId);
-    }
-  }
-
-  async nextData(): Promise<void> {
-    const totalDataPoints = await this.sensorData$.pipe(take(1)).toPromise().then(sensorData => sensorData?.length || 0);
-    const nextPosition = await this.currentPosition + this.maxDataPoints;
-    if (nextPosition < totalDataPoints) {
-      this.currentPosition = nextPosition;
-      this.updateChartData();
-    }
-  }
-
-  previousData(): void {
-    const previousPosition = this.currentPosition - this.maxDataPoints;
-    if (previousPosition >= 0) {
-      this.currentPosition = previousPosition;
-      this.updateChartData();
-    }
-  }
-
-  previousChart(): void {
-    const previousPosition = this.currentPosition - this.maxDataPoints;
-    if (previousPosition >= 0) {
-      this.currentPosition = previousPosition;
-      this.updateChartData();
-    }
-  }
-
-  async nextChart(): Promise<void> {
-    const totalDataPoints = await this.sensorData$.pipe(take(1)).toPromise().then(sensorData => sensorData?.length || 0);
-    const nextPosition = await this.currentPosition + this.maxDataPoints;
-    if (nextPosition < totalDataPoints) {
-      this.currentPosition = nextPosition;
-      this.updateChartData();
     }
   }
 

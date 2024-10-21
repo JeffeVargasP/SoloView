@@ -5,6 +5,7 @@ import { SensorData } from '../sensor-data';
 import { loadSensorData } from '../state/sensor.actions';
 import { selectSensorData } from '../state/sensor.selectors';
 import { SessionService } from '../service/session.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-general',
@@ -25,7 +26,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
   private maxDataPoints = 10;
   private currentPosition = 0;
 
-  constructor(private store: Store, private sessionService: SessionService) {
+  constructor(private store: Store, private sessionService: SessionService, private router: Router) {
     this.sensorData$ = this.store.select(selectSensorData);
     this.userId = JSON.parse(sessionStorage.getItem('session') || '{}');
   }
@@ -59,6 +60,12 @@ export class GeneralComponent implements OnInit, OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+  }
+
+  navigateTo(path: string): void {
+
+    this.router.navigate([path]);
+
   }
 
   async nextData(): Promise<void> {
