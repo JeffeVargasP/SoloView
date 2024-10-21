@@ -4,6 +4,7 @@ import { Observable, Subscription, take } from 'rxjs';
 import { SensorData } from '../sensor-data';
 import { loadSensorData } from '../state/sensor.actions';
 import { selectSensorData } from '../state/sensor.selectors';
+import { SessionService } from '../service/session.service';
 
 @Component({
   selector: 'app-general',
@@ -17,18 +18,24 @@ export class GeneralComponent implements OnInit, OnDestroy {
   humidityData: any;
   humidityOptions: any;
   userId: any;
+  city: any;
   sensorData$: Observable<SensorData[]>;
   private subscription: Subscription | undefined;
   private intervalId: any;
   private maxDataPoints = 10;
   private currentPosition = 0;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private sessionService: SessionService) {
     this.sensorData$ = this.store.select(selectSensorData);
     this.userId = JSON.parse(sessionStorage.getItem('session') || '{}');
   }
 
   ngOnInit(): void {
+
+    this.sessionService.getSession().subscribe((session: any) => {
+      this.city = session.user.city;
+    });
+
     // Carrega os dados do sensor
     this.store.dispatch(loadSensorData());
 

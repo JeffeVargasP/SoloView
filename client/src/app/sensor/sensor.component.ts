@@ -5,6 +5,7 @@ import { SensorData } from '../sensor-data';
 import { Store } from '@ngrx/store';
 import { selectSensorData } from '../state/sensor.selectors';
 import { loadSensorData } from '../state/sensor.actions';
+import { SessionService } from '../service/session.service';
 
 @Component({
   selector: 'app-sensor',
@@ -21,6 +22,7 @@ export class SensorComponent implements OnInit {
   ];
 
   data: any;
+  farm: any;
   userId: any;
   options: any;
   sensorData$: Observable<SensorData[]>;
@@ -29,12 +31,17 @@ export class SensorComponent implements OnInit {
   private maxDataPoints = 10;
   private currentPosition = 0;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private sessionService: SessionService) {
     this.sensorData$ = this.store.select(selectSensorData);
     this.userId = JSON.parse(sessionStorage.getItem('session') || '{}');
   }
 
   ngOnInit(): void {
+
+    this.sessionService.getSession().subscribe((session: any) => {
+      this.farm = session.user.farm;
+    });
+
     this.store.dispatch(loadSensorData());
     this.intervalId = setInterval(() => {
       this.store.dispatch(loadSensorData());
