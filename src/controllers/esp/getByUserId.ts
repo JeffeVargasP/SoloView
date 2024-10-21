@@ -4,12 +4,12 @@ import { database } from "../../../database";
 export const getEspDataByUserId: Express = express();
 
 getEspDataByUserId.get("/user/id/:user_id", async (req: Request, res: Response) => {
-    const userId = +req.params.userId;
+    const userId = +req.params.user_id;
 
     try {
         if (!userId) {
             res.status(400).json({
-                message: "sensor_id is required",
+                message: "userId is required",
             });
         } else {
 
