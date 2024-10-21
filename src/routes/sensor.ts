@@ -4,5 +4,5 @@ import { getSensorByUserId } from "../controllers/sensor/getByUserId";
 
 export const sensorRoutes: Router = Router();
 
-sensorRoutes.use("/sensor", getSensorByUserId);
-sensorRoutes.use("/data", createEspData);
+sensorRoutes.use("/", getSensorByUserId);
+sensorRoutes.use("/", createEspData);

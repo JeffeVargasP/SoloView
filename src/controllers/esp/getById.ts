@@ -13,8 +13,8 @@ getEspDataById.get("/sensor/id/:sensor_id", async (req: Request, res: Response) 
             });
         } else {
 
-            const data = await database.sensor.findMany({
-                where: { sensorId },
+            const data = await database.espressif.findMany({
+                where: { id: sensorId },
 
             });
 

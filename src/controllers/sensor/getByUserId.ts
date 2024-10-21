@@ -3,7 +3,7 @@ import { database } from "../../../database";
 
 export const getSensorByUserId: Express = express();
 
-getSensorByUserId.get("/id/user/:user_id", async (req: Request, res: Response) => {
+getSensorByUserId.get("/user/id/:user_id", async (req: Request, res: Response) => {
     const userId = req.params.user_id;
 
     try {
@@ -15,8 +15,12 @@ getSensorByUserId.get("/id/user/:user_id", async (req: Request, res: Response) =
 
         } else {
 
-            const data = await database.espressif.findMany({
+            const sensorId = await database.espressif.findFirst({
                 where: { userId: parseInt(userId) },
+            });
+
+            const data = await database.sensor.findMany({
+                where: { espressifId: sensorId?.id },
             });
 
             if (data.length === 0 || data === undefined) {
