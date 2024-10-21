@@ -1,20 +1,20 @@
 import express, { Express, Request, Response } from "express";
 import { database } from "../../../database";
 
-export const getEspDataById: Express = express();
+export const getEspDataByUserId: Express = express();
 
-getEspDataById.get("/sensor/id/:sensor_id", async (req: Request, res: Response) => {
-    const sensorId = +req.params.sensor_id;
+getEspDataByUserId.get("/sensor/id/:user_id", async (req: Request, res: Response) => {
+    const userId = +req.params.userId;
 
     try {
-        if (!sensorId) {
+        if (!userId) {
             res.status(400).json({
                 message: "sensor_id is required",
             });
         } else {
 
             const data = await database.sensor.findMany({
-                where: { sensorId },
+                where: { userId },
 
             });
 
