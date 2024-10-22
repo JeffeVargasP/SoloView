@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   name: string | any;
   email: string | any;
   city: string | any;
-  farm: string | any;
+  property: string | any;
   token: string | any;
 
   constructor(private fb: FormBuilder, private userSerivce: UserService, private sessionService: SessionService, private router: Router) { }
@@ -28,14 +28,14 @@ export class ProfileComponent implements OnInit {
       this.name = session.user.name;
       this.email = session.user.email;
       this.city = session.user.city;
-      this.farm = session.user.farm;
+      this.property = session.user.property;
     });
 
     this.perfilForm = this.fb.group({
       name: [this.name, Validators.required],
       email: [this.email, Validators.required],
       city: [this.city, Validators.required],
-      farm: [this.farm, Validators.required],
+      property: [this.property, Validators.required],
     });
 
   }
@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
       this.perfilForm.value.name,
       this.perfilForm.value.email,
       this.perfilForm.value.city,
-      this.perfilForm.value.farm
+      this.perfilForm.value.property
     ).subscribe((res: any) => {
       const session = {
         token: this.token,
@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit {
           name: this.perfilForm.value.name,
           email: this.perfilForm.value.email,
           city: this.perfilForm.value.city,
-          farm: this.perfilForm.value.farm
+          property: this.perfilForm.value.property
         }
       }
       if (res) {
@@ -64,7 +64,7 @@ export class ProfileComponent implements OnInit {
           this.name = session.user.name;
           this.email = session.user.email;
           this.city = session.user.city;
-          this.farm = session.user.farm;
+          this.property = session.user.property;
           this.router.navigate(['/profile']);
         };
       }

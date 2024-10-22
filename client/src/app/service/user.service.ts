@@ -19,8 +19,8 @@ export class UserService {
     return this.http.post(this.apiURL + 'user/register', { name, email, password });
   }
 
-  update(name: string, email: string, city: string, farm: string) {
-    return this.http.put(this.apiURL + 'user/update', { name, email, city, farm });
+  update(name: string, email: string, city: string, property: string) {
+    return this.http.put(this.apiURL + 'user/update', { name, email, city, property });
   }
 
 }

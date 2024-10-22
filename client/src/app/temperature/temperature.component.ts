@@ -16,7 +16,7 @@ export class TemperatureComponent implements OnInit {
 
   data: any;
   userId: any;
-  farm: any;
+  property: any;
   sensorData$: Observable<SensorData[]>;
   private subscription: Subscription | undefined;
   private intervalId: any;
@@ -31,7 +31,7 @@ export class TemperatureComponent implements OnInit {
 
   ngOnInit(): void {
     this.sessionService.getSession().subscribe((session: any) => {
-      this.farm = session.user.farm;
+      this.property = session.user.property;
     });
 
     this.store.dispatch(loadSensorData());

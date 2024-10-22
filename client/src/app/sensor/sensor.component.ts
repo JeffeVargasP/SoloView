@@ -15,7 +15,7 @@ import { SessionService } from '../service/session.service';
 export class SensorComponent implements OnInit {
 
   data: any;
-  farm: any;
+  property: any;
   name: any;
   userId: any;
   options: any;
@@ -33,7 +33,7 @@ export class SensorComponent implements OnInit {
   ngOnInit(): void {
 
     this.sessionService.getSession().subscribe((session: any) => {
-      this.farm = session.user.farm;
+      this.property = session.user.property;
       this.name = session.user.name;
     });
 
