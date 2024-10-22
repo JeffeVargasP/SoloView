@@ -5,6 +5,6 @@ import { getSensorDataByUserId } from "../controllers/sensor/getByUserId";
 
 export const dataRoutes: Router = express.Router();
 
-dataRoutes.use("/data", getEspData);
-dataRoutes.use("/data", getEspDataById);
+dataRoutes.use("/data", getSensor);
+dataRoutes.use("/data", getSensorById);
 dataRoutes.use("/data", getSensorDataByUserId);

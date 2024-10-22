@@ -17,11 +17,11 @@ createSensorData.post("/", async (req: Request, res: Response, next: NextFunctio
 
     try {
 
-        const data = await database.sensor.create({
+        const data = await database.data.create({
             data: {
                 sensorId,
-                temperatura,
-                umidade,
+                temperature: temperatura,
+                humidity: umidade,
             },
         });
         res.status(200).json(data);

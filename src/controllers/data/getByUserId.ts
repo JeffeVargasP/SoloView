@@ -20,7 +20,7 @@ getSensorByUserId.get("/user/id/:user_id", async (req: Request, res: Response) =
             });
 
             const data = await database.data.findMany({
-                where: { espressifId: sensorId?.id },
+                where: { sensorId: sensorId?.id },
             });
 
             if (data.length === 0 || data === undefined) {
