@@ -5,7 +5,6 @@ export const createSensorData: Express = express();
 
 createSensorData.post("/", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     const { sensorId, temperatura, umidade } = req.body;
-    let model = req.body.model;
 
     if (!sensorId || !temperatura || !umidade) {
         return res.status(400).json({

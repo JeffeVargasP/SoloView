@@ -1,9 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import { database } from "../../../database";
 
-export const getSensorDataByUserId: Express = express();
+export const getSensorByUserId: Express = express();
 
-getSensorDataByUserId.get("/user/id/:user_id", async (req: Request, res: Response) => {
+getSensorByUserId.get("/user/id/:user_id", async (req: Request, res: Response) => {
     const userId = +req.params.user_id;
 
     try {

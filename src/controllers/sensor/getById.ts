@@ -3,7 +3,7 @@ import { database } from "../../../database";
 
 export const getSensorById: Express = express();
 
-getSensorById.get("/sensor/id/:sensor_id", async (req: Request, res: Response) => {
+getSensorById.get("/id/:sensor_id", async (req: Request, res: Response) => {
     const sensorId = +req.params.sensor_id;
 
     try {
@@ -13,15 +13,15 @@ getSensorById.get("/sensor/id/:sensor_id", async (req: Request, res: Response) =
             });
         } else {
 
-            const data = await database.sensor.findMany({
+            const sensors = await database.sensor.findMany({
                 where: { id: sensorId },
 
             });
 
-            if (data.length === 0 || data === undefined) {
+            if (sensors.length === 0 || sensors === undefined) {
                 res.status(404).json({ message: "No data found" });
             } else {
-                res.status(200).json(data);
+                res.status(200).json(sensors);
             }
         }
     } catch (error) {

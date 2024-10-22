@@ -1,10 +1,8 @@
 import express, { Router } from "express";
-import { getSensor } from "../controllers/sensor/getAll";
-import { getSensorById } from "../controllers/sensor/getById";
-import { getSensorDataByUserId } from "../controllers/sensor/getByUserId";
+import { getDataByUserId } from "../controllers/data/getByUserId";
+import { createSensorData } from "../controllers/data/create";
 
 export const dataRoutes: Router = express.Router();
 
-dataRoutes.use("/data", getSensor);
-dataRoutes.use("/data", getSensorById);
-dataRoutes.use("/data", getSensorDataByUserId);
+dataRoutes.use("/", getDataByUserId);
+dataRoutes.use("/", createSensorData);
