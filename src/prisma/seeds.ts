@@ -9,7 +9,7 @@ async function main() {
             name: 'visitante',
             password: '123456',
             city: 'pompéia',
-            farm: 'fazenda feliz',
+            property: 'fazenda feliz',
         },
     })
     console.log({ visitante })

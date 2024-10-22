@@ -5,11 +5,11 @@ import { hashPassword } from "../../middleware/auth";
 export const updateUser: Express = express();
 
 updateUser.put("/", async (req: Request, res: Response): Promise<any> => {
-    const { name, email, city, farm } = req.body;
+    const { name, email, city, property } = req.body;
 
-    if ( !name || !email || !city || !farm ) {
+    if ( !name || !email || !city || !property ) {
         return res.status(400).json({
-            message: "Bad Request: name, email, city, farm are required!",
+            message: "Bad Request: name, email, city, property are required!",
         });
     }
 
@@ -29,7 +29,7 @@ updateUser.put("/", async (req: Request, res: Response): Promise<any> => {
             name,
             email,
             city,
-            farm,
+            property,
         }
     });
 
