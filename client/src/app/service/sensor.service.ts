@@ -21,4 +21,8 @@ export class SensorService {
     return this.http.get(this.apiURL + 'sensor/user/id/' + userId);
   }
 
+  getDataByUserId(userId: string): Observable<any> {
+    return this.http.get(this.apiURL + 'data/user/id/' + userId);
+  }
+
 }

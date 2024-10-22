@@ -12,7 +12,7 @@ export class SensorEffects {
     this.actions$.pipe(
       ofType(loadSensorData),
       mergeMap(() =>
-        this.espressifService.getEspressifByUserId(this.userId.user.id).pipe(
+        this.espressifService.getDataByUserId(this.userId.user.id).pipe(
           map(data => loadSensorDataSuccess({ data })),
           catchError(error => of(loadSensorDataFailure({ error })))
         )
