@@ -15,26 +15,28 @@ getDataByUserId.get("/user/id/:user_id", async (req: Request, res: Response) => 
 
         } else {
 
-            const sensorId = await database.sensor.findFirst({
+            const sensorIds = await database.sensor.findMany({
                 where: { userId: parseInt(userId) },
             });
 
-            if (!sensorId) {
+            if (!sensorIds) {
 
                 res.status(404).json({
                     message: "Sensor not found"
                 });
 
-            } else {
-
-                const sensorData = await database.data.findMany({
-                    where: { sensorId: sensorId.id }
-                });
-
-                res.status(200).json(sensorData);
-
             }
 
+            const sensorData = await database.data.findMany({
+                where: {
+                    sensorId: {
+                        in: sensorIds.map((sensor) => sensor.id),
+                    },
+                },
+            });
+
+            res.status(200).json(sensorData);
+               
         }
     } catch (error) {
 
