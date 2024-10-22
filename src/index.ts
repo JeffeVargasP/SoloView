@@ -6,8 +6,8 @@ import cors from 'cors';
 // Routers
 
 import { userRoutes } from './routes/user';
-import { espRoutes } from './routes/esp';
 import { sensorRoutes } from './routes/sensor';
+import { dataRoutes } from './routes/data';
 
 const app: Express = express();
 const { serverPort } = config;
@@ -31,8 +31,8 @@ app.get("/", (req, res) => {
 
 // Routers
 app.use("/user", userRoutes);
-app.use("/esp", espRoutes);
 app.use("/sensor", sensorRoutes);
+app.use("/data", dataRoutes);
 
 app.listen(serverPort, () => {
     console.log(`Server is running on port ${serverPort}`);

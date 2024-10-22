@@ -1,12 +1,12 @@
 import express, { Request, Response } from "express";
 import { database } from "../../../database";
 
-export const getEspData: express.Express = express();
+export const getSensor: express.Express = express();
 
-getEspData.get("/", async (req: Request, res: Response) => {
+getSensor.get("/", async (req: Request, res: Response) => {
     try {
 
-        const result = await database.espressif.findMany();
+        const result = await database.sensor.findMany();
 
         if (result.length === 0 || result === undefined) {
             res.status(404).json({ message: "No data found" });

@@ -1,9 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import { database } from "../../../database";
 
-export const getEspDataById: Express = express();
+export const getSensorById: Express = express();
 
-getEspDataById.get("/sensor/id/:sensor_id", async (req: Request, res: Response) => {
+getSensorById.get("/sensor/id/:sensor_id", async (req: Request, res: Response) => {
     const sensorId = +req.params.sensor_id;
 
     try {
@@ -13,7 +13,7 @@ getEspDataById.get("/sensor/id/:sensor_id", async (req: Request, res: Response) 
             });
         } else {
 
-            const data = await database.espressif.findMany({
+            const data = await database.sensor.findMany({
                 where: { id: sensorId },
 
             });

@@ -1,15 +1,16 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import { database } from "../../../database";
 
-export const createEspData: Express = express();
+export const createSensorData: Express = express();
 
-createEspData.post("/", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const { espressifId, temperatura, umidade, userId } = req.body;
+createSensorData.post("/", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    const { sensorId, temperatura, umidade } = req.body;
+    let model = req.body.model;
 
-    if (!espressifId || !temperatura || !umidade || !userId) {
+    if (!sensorId || !temperatura || !umidade) {
         return res.status(400).json({
 
-            message: "Bad Request: espressifId, temperatura, umidade, userId are required!",
+            message: "Bad Request: sensorId, temperatura and umidade are required!",
 
         });
     }
@@ -18,10 +19,9 @@ createEspData.post("/", async (req: Request, res: Response, next: NextFunction):
 
         const data = await database.sensor.create({
             data: {
-                espressifId,
+                sensorId,
                 temperatura,
                 umidade,
-                userId,
             },
         });
         res.status(200).json(data);

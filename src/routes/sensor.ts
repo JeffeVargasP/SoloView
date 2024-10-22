@@ -1,8 +1,8 @@
 import express, { Router } from "express";
-import { createEspData } from "../controllers/sensor/create";
-import { getSensorByUserId } from "../controllers/sensor/getByUserId";
+import { createSensorData } from "../controllers/data/create";
+import { getSensorByUserId } from "../controllers/data/getByUserId";
 
 export const sensorRoutes: Router = Router();
 
 sensorRoutes.use("/", getSensorByUserId);
-sensorRoutes.use("/", createEspData);
+sensorRoutes.use("/", createSensorData);

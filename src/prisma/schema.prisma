@@ -9,32 +9,32 @@ datasource db {
 }
 
 model User {
-  id        Int         @id @default(autoincrement())
-  email     String      @unique
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
   name      String
   password  String
   city      String?
   property  String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  Espressif Espressif[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Espressif Sensor[]
+}
+
+model Data {
+  id          Int      @id @default(autoincrement())
+  sensorId    Int
+  sensor      Sensor   @relation(fields: [sensorId], references: [id])
+  temperature Float?
+  humidity    Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Sensor {
-  id          Int       @id @default(autoincrement())
-  espressifId Int
-  espressif   Espressif @relation(fields: [espressifId], references: [id])
-  temperature Float
-  humidity    Float
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  userId      Int?
-}
-
-model Espressif {
   id        Int      @id @default(autoincrement())
-  sensor    Sensor[]
   userId    Int
+  model     String?
+  data      Data[]
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
