@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit {
           this.email = session.user.email;
           this.city = session.user.city;
           this.property = session.user.property;
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/geral']);
         };
       }
     });

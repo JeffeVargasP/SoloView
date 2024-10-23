@@ -45,7 +45,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
     }, 5000);
 
     // Inscreve-se para atualizar os gráficos quando os dados mudarem
-    this.subscription = this.sensorData$.subscribe((sensorData) => {
+    this.subscription = this.sensorData$.subscribe((sensorData: SensorData[]) => {
       if (sensorData) {
         this.updateChartData(sensorData);
       }
@@ -66,7 +66,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
   }
 
   async nextData(): Promise<void> {
-    const totalDataPoints = await this.sensorData$.pipe(take(1)).toPromise().then(sensorData => sensorData?.length || 0);
+    const totalDataPoints = await this.sensorData$.pipe(take(1)).toPromise().then((sensorData: any) => sensorData?.length || 0);
     const nextPosition = this.currentPosition + this.maxDataPoints;
     if (nextPosition < totalDataPoints) {
       this.currentPosition = nextPosition;
@@ -81,7 +81,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
     const previousPosition = this.currentPosition - this.maxDataPoints;
     if (previousPosition >= 0) {
       this.currentPosition = previousPosition;
-      this.sensorData$.pipe(take(1)).toPromise().then(sensorData => {
+      this.sensorData$.pipe(take(1)).toPromise().then((sensorData: any) => {
         if (sensorData) {
           this.updateChartData(sensorData);
         }
@@ -90,18 +90,41 @@ export class GeneralComponent implements OnInit, OnDestroy {
   }
 
   private updateChartData(sensorData: SensorData[]): void {
+    // Identifica o primeiro sensorId com dados de temperatura
+    const firstTemperatureSensorId = sensorData.find(item => item.temperature !== null)?.sensorId;
+    const temperatureDataPoints = sensorData.filter(
+      item => item.sensorId === firstTemperatureSensorId && item.temperature !== null
+    );
+
+    // Identifica o primeiro sensorId com dados de umidade
+    const firstHumiditySensorId = sensorData.find(item => item.humidity !== null)?.sensorId;
+    const humidityDataPoints = sensorData.filter(
+      item => item.sensorId === firstHumiditySensorId && item.humidity !== null
+    );
+
     // Limita os dados para os gráficos
-    const limitedSensorData = sensorData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
-    const labels = limitedSensorData.map(item => new Date(item.createdAt).toLocaleTimeString());
-    const temperatureData = limitedSensorData.map(item => item.temperature);
-    this.weather = temperatureData[temperatureData.length - 1];
-    const humidityData = limitedSensorData.map(item => item.humidity);
+    const limitedTemperatureData = temperatureDataPoints.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
+    const limitedHumidityData = humidityDataPoints.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
+
+    const temperatureLabels = limitedTemperatureData.map(item => new Date(item.createdAt).toLocaleTimeString());
+    const temperatureValues = limitedTemperatureData.map(item => item.temperature);
+    this.weather = temperatureValues[temperatureValues.length - 1];
+
+    const humidityLabels = limitedHumidityData.map(item => new Date(item.createdAt).toLocaleTimeString());
+    const humidityValues = limitedHumidityData.map(item => item.humidity);
 
     // Atualiza o gráfico de temperatura usando ECharts
     this.temperatureData = {
+      tooltip: {
+        trigger: 'axis',
+        formatter: (params: any) => {
+          const { value } = params[0];
+          return `Temperatura: ${value}°C`;
+        }
+      },
       xAxis: {
         type: 'category',
-        data: labels,
+        data: temperatureLabels,
         boundaryGap: false
       },
       yAxis: {
@@ -110,19 +133,26 @@ export class GeneralComponent implements OnInit, OnDestroy {
         max: 50
       },
       series: [{
-        data: temperatureData,
+        data: temperatureValues,
         type: 'line',
         smooth: true,
         areaStyle: {},
         color: '#FF5722'
       }]
     };
-
+  
     // Atualiza o gráfico de umidade usando ECharts
     this.humidityData = {
+      tooltip: {
+        trigger: 'axis',
+        formatter: (params: any) => {
+          const { value } = params[0];
+          return `Umidade: ${value}%`;
+        }
+      },
       xAxis: {
         type: 'category',
-        data: labels,
+        data: humidityLabels,
         boundaryGap: false
       },
       yAxis: {
@@ -131,7 +161,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
         max: 100
       },
       series: [{
-        data: humidityData,
+        data: humidityValues,
         type: 'line',
         smooth: true,
         areaStyle: {},
@@ -139,5 +169,4 @@ export class GeneralComponent implements OnInit, OnDestroy {
       }]
     };
   }
-
 }
