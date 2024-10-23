@@ -4,7 +4,7 @@ import { Observable, Subscription, take } from 'rxjs';
 import { SensorData } from '../sensor-data';
 import { Store } from '@ngrx/store';
 import { selectSensorData } from '../state/sensor.selectors';
-import { loadSensorData, loadSensorsByUserId } from '../state/sensor.actions';
+import { loadSensorData } from '../state/sensor.actions';
 import { SessionService } from '../service/session.service';
 
 @Component({
@@ -30,44 +30,45 @@ export class HumidityComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userId = JSON.parse(sessionStorage.getItem('session') || '{}');
   }
 
-  // No método ngOnInit ou após receber os dados do sensor:
-ngOnInit(): void {
-  this.sessionService.getSession().subscribe((session: any) => {
-    this.property = session.user.property;
-  });
+  ngOnInit(): void {
+    this.sessionService.getSession().subscribe((session: any) => {
+      this.property = session.user.property;
+    });
 
-  this.store.dispatch(loadSensorData());
-  this.intervalId = setInterval(() => {
     this.store.dispatch(loadSensorData());
-  }, 5000); // Atualiza a cada 5 segundos
+    this.intervalId = setInterval(() => {
+      this.store.dispatch(loadSensorData());
+    }, 5000); // Atualiza a cada 5 segundos
 
-  this.subscription = this.sensorData$.subscribe((sensorData) => {
-    if (sensorData) {
-      this.updateChartData(sensorData);
-    }
-  });
+    this.subscription = this.sensorData$.subscribe((sensorData) => {
+      if (sensorData) {
+        this.updateChartData(sensorData);
+      }
+    });
 
-  // Verifica quais sensores têm valor de umidade antes de exibir no select
-  this.sensorService.getSensorByUserId(this.userId.user.id).subscribe((sensors: any) => {
-    if (sensors) {
-      this.getSensorModelsWithHumidity(sensors);
-    }
-  });
-}
+    this.sensorService.getSensorByUserId(this.userId.user.id).subscribe((sensors: any) => {
+      if (sensors) {
+        this.getSensorModelsWithHumidity(sensors);
+      }
+    });
+  }
 
-private getSensorModelsWithHumidity(sensors: any): void {
-  this.sensorData$.pipe(take(1)).subscribe((sensorData) => {
-    // Filtra os sensores que possuem valores de umidade registrados
-    const modelsWithHumidity = sensors.filter((sensor: any) =>
-      sensorData.some((data: SensorData) => data.sensorId === sensor.id && data.humidity !== null)
-    );
-
-    // Popula o modelo apenas com os sensores que têm dados de umidade
-    this.model = modelsWithHumidity.map((item: any) => ({ id: item.id, model: item.model }));
-    console.log(this.model);
-  });
-}
-
+  private getSensorModelsWithHumidity(sensors: any): void {
+    this.sensorData$.pipe(take(1)).subscribe((sensorData) => {
+      const modelsWithHumidity = sensors.filter((sensor: any) =>
+        sensorData.some((data: SensorData) => data.sensorId === sensor.id && data.humidity !== null)
+      );
+  
+      this.model = modelsWithHumidity.map((item: any) => ({ id: item.id, model: item.model }));
+  
+      // Define o valor padrão do selectedSensorId como o id do primeiro sensor, se existir
+      if (this.model.length > 0) {
+        this.selectedSensorId = this.model[0].id;
+        this.updateChartData(sensorData); // Atualiza o gráfico com os dados do primeiro sensor
+      }
+      console.log(this.model);
+    });
+  }
 
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -79,6 +80,15 @@ private getSensorModelsWithHumidity(sensors: any): void {
   }
 
   ngAfterViewInit(): void { }
+
+  onModelChange(): void {
+    console.log('Selected sensor:', this.selectedSensorId);
+    this.sensorData$.pipe(take(1)).subscribe((sensorData) => {
+      if (sensorData) {
+        this.updateChartData(sensorData);
+      }
+    });
+  }
 
   async nextData(): Promise<void> {
     const totalDataPoints = await this.sensorData$.pipe(take(1)).toPromise().then(sensorData => sensorData?.length || 0);

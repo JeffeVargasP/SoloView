@@ -9,10 +9,13 @@
     </div>
 
     <div class="flex flex-row gap-4">
-      <select [(ngModel)]="selectedSensorId"
+      <select [(ngModel)]="selectedSensorId" (change)="onModelChange()"
         class="bg-[#272727] text-white font-bold py-2 px-4 rounded-md outline-none">
-        <option *ngFor="let item of model" [ngValue]="item.id">{{ item.model }} - {{item.id}} </option>
+        <option *ngFor="let item of model" [ngValue]="item.id">
+          {{ item.model }} - {{ item.id }}
+        </option>
       </select>
+
 
       <!-- Botões de Navegação -->
       <div class="flex flex-row items-center gap-3">
