@@ -6,10 +6,10 @@ export const createSensorData: Express = express();
 createSensorData.post("/", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     const { sensorId, temperatura, umidade } = req.body;
 
-    if (!sensorId || !temperatura || !umidade) {
+    if (!sensorId) {
         return res.status(400).json({
 
-            message: "Bad Request: sensorId, temperatura and umidade are required!",
+            message: "Bad Request: sensorId is required!",
 
         });
     }
