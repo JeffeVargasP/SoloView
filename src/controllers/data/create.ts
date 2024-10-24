@@ -4,7 +4,7 @@ import { database } from "../../../database";
 export const createSensorData: Express = express();
 
 createSensorData.post("/", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const { sensorId, temperatura, umidade } = req.body;
+    const { sensorId, temperature, humidity } = req.body;
 
     if (!sensorId) {
         return res.status(400).json({
@@ -19,8 +19,8 @@ createSensorData.post("/", async (req: Request, res: Response, next: NextFunctio
         const data = await database.data.create({
             data: {
                 sensorId,
-                temperature: temperatura,
-                humidity: umidade,
+                temperature,
+                humidity,
             },
         });
         res.status(200).json(data);
