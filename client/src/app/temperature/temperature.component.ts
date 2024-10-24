@@ -125,7 +125,7 @@ export class TemperatureComponent implements OnInit, OnDestroy {
         trigger: 'axis',
         formatter: (params: any) => {
           const { data } = params[0];
-          return `Temperatura: ${data}%`;
+          return `Temperatura: ${data}º C`;
         }
       },
       series: [{

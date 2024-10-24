@@ -119,7 +119,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
         trigger: 'axis',
         formatter: (params: any) => {
           const { value } = params[0];
-          return `Temperatura: ${value}°C`;
+          return `Temperatura: ${value}° C`;
         }
       },
       xAxis: {
