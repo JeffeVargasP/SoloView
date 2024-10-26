@@ -138,6 +138,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
 
       // Atualiza o gráfico de temperatura
       this.temperatureData = this.createChartData(temperatureLabels, temperatureValues, '#FF5722', 'Temperatura', '° C', 50);
+      this.weather = temperatureValues[temperatureValues.length - 1];
     }
 
     // ---- Gráfico de Umidade ----
