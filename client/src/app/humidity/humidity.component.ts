@@ -58,9 +58,9 @@ export class HumidityComponent implements OnInit, OnDestroy, AfterViewInit {
       const modelsWithHumidity = sensors.filter((sensor: any) =>
         sensorData.some((data: SensorData) => data.sensorId === sensor.id && data.humidity !== null)
       );
-  
+
       this.model = modelsWithHumidity.map((item: any) => ({ id: item.id, model: item.model }));
-  
+
       // Define o valor padrão do selectedSensorId como o id do primeiro sensor, se existir
       if (this.model.length > 0) {
         this.selectedSensorId = this.model[0].id;
@@ -122,12 +122,13 @@ export class HumidityComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const limitedData = filteredData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
     const humidityValues = limitedData.map(item => item.humidity);
+    const humidityLabels = limitedData.map(item => new Date(item.createdAt).toLocaleTimeString());
 
     this.data = {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: Array.from({ length: humidityValues.length }, (_, i) => i + 1),
+        data: humidityLabels,
       },
       yAxis: {
         type: 'value',
@@ -137,8 +138,8 @@ export class HumidityComponent implements OnInit, OnDestroy, AfterViewInit {
       tooltip: {
         trigger: 'axis',
         formatter: (params: any) => {
-          const { data } = params[0];
-          return `Umidade: ${data}%`;
+          const { value } = params[0];
+          return `Umidade: ${value}%`;
         }
       },
       series: [{

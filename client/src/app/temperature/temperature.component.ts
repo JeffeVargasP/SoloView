@@ -88,7 +88,6 @@ export class TemperatureComponent implements OnInit, OnDestroy {
   }
 
   onModelChange(): void {
-  
     this.sensorData$.pipe(take(1)).subscribe((sensorData) => {
       if (sensorData) {
         this.updateChartData(sensorData); // Passa os dados do sensor
@@ -108,24 +107,25 @@ export class TemperatureComponent implements OnInit, OnDestroy {
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 
     const temperatureValues = filteredData.map(item => item.temperature);
+    const temperatureLabels = filteredData.map(item => new Date(item.createdAt).toLocaleTimeString());
 
     // Atualiza o gráfico
     this.data = {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: Array.from({ length: temperatureValues.length }, (_, i) => i + 1),
+        data: temperatureLabels,
       },
       yAxis: {
         type: 'value',
         min: 0,
-        max: 100
+        max: 50
       },
       tooltip: {
         trigger: 'axis',
         formatter: (params: any) => {
-          const { data } = params[0];
-          return `Temperatura: ${data}º C`;
+          const { value } = params[0];
+          return `Temperatura: ${value}º C`;
         }
       },
       series: [{

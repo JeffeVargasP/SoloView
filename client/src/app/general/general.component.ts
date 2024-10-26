@@ -89,84 +89,72 @@ export class GeneralComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateChartData(sensorData: SensorData[]): void {
-    // Identifica o primeiro sensorId com dados de temperatura
-    const firstTemperatureSensorId = sensorData.find(item => item.temperature !== null)?.sensorId;
-    const temperatureDataPoints = sensorData.filter(
-      item => item.sensorId === firstTemperatureSensorId && item.temperature !== null
-    );
+  private getLimitedData(data: SensorData[]): SensorData[] {
+    return data.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
+  }
 
-    // Identifica o primeiro sensorId com dados de umidade
-    const firstHumiditySensorId = sensorData.find(item => item.humidity !== null)?.sensorId;
-    const humidityDataPoints = sensorData.filter(
-      item => item.sensorId === firstHumiditySensorId && item.humidity !== null
-    );
-
-    // Limita os dados para os gráficos
-    const limitedTemperatureData = temperatureDataPoints.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
-    const limitedHumidityData = humidityDataPoints.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
-
-    const temperatureLabels = limitedTemperatureData.map(item => new Date(item.createdAt).toLocaleTimeString());
-    const temperatureValues = limitedTemperatureData.map(item => item.temperature);
-    this.weather = temperatureValues[temperatureValues.length - 1];
-
-    const humidityLabels = limitedHumidityData.map(item => new Date(item.createdAt).toLocaleTimeString());
-    const humidityValues = limitedHumidityData.map(item => item.humidity);
-
-    // Atualiza o gráfico de temperatura usando ECharts
-    this.temperatureData = {
+  private createChartData(labels: string[], values: number[], color: string, label: string, unit: string, max: number) {
+    return {
       tooltip: {
         trigger: 'axis',
         formatter: (params: any) => {
           const { value } = params[0];
-          return `Temperatura: ${value}° C`;
+          return `${label}: ${value}${unit}`;
         }
       },
       xAxis: {
         type: 'category',
-        data: temperatureLabels,
+        data: labels, // Usamos os horários aqui em vez de números sequenciais
         boundaryGap: false
       },
       yAxis: {
         type: 'value',
         min: 0,
-        max: 50
+        max: max
       },
       series: [{
-        data: temperatureValues,
+        data: values,
         type: 'line',
         smooth: true,
         areaStyle: {},
-        color: '#FF5722'
-      }]
-    };
-  
-    // Atualiza o gráfico de umidade usando ECharts
-    this.humidityData = {
-      tooltip: {
-        trigger: 'axis',
-        formatter: (params: any) => {
-          const { value } = params[0];
-          return `Umidade: ${value}%`;
-        }
-      },
-      xAxis: {
-        type: 'category',
-        data: humidityLabels,
-        boundaryGap: false
-      },
-      yAxis: {
-        type: 'value',
-        min: 0,
-        max: 100
-      },
-      series: [{
-        data: humidityValues,
-        type: 'line',
-        smooth: true,
-        areaStyle: {},
-        color: '#42A5F5'
+        color: color
       }]
     };
   }
-}
+
+  private updateChartData(sensorData: SensorData[]): void {
+    // ---- Gráfico de Temperatura ----
+    const firstTemperatureSensorId = sensorData.find(item => item.temperature !== null)?.sensorId;
+    if (firstTemperatureSensorId) {
+      const filteredTemperatureData = sensorData
+        .filter(item => item.temperature !== null && item.sensorId === firstTemperatureSensorId)
+        .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+      const limitedTemperatureData = filteredTemperatureData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
+      const temperatureLabels = limitedTemperatureData.map(item =>
+        new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      );
+      const temperatureValues = limitedTemperatureData.map(item => item.temperature);
+
+      // Atualiza o gráfico de temperatura
+      this.temperatureData = this.createChartData(temperatureLabels, temperatureValues, '#FF5722', 'Temperatura', '° C', 50);
+    }
+
+    // ---- Gráfico de Umidade ----
+    const firstHumiditySensorId = sensorData.find(item => item.humidity !== null)?.sensorId;
+    if (firstHumiditySensorId) {
+      const filteredHumidityData = sensorData
+        .filter(item => item.humidity !== null && item.sensorId === firstHumiditySensorId)
+        .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+      const limitedHumidityData = filteredHumidityData.slice(this.currentPosition, this.currentPosition + this.maxDataPoints);
+      const humidityLabels = limitedHumidityData.map(item =>
+        new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      );
+      const humidityValues = limitedHumidityData.map(item => item.humidity);
+
+      // Atualiza o gráfico de umidade
+      this.humidityData = this.createChartData(humidityLabels, humidityValues, '#42A5F5', 'Umidade', '%', 100);
+    }
+  }
+}  
